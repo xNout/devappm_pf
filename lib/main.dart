@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'Activity1Screen.dart';
+import 'Activity2Screen.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -18,44 +20,49 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Material App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Material App Bar'),
-        ),
-        body: const FirestoreData(),
+      title: 'Flutter Navigation Example',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      home: const HomeScreen(),
     );
   }
 }
 
-class FirestoreData extends StatelessWidget {
-  const FirestoreData({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('prueba').snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return const Text('Something went wrong');
-        }
-
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("Loading");
-        }
-
-        final data = snapshot.requireData;
-
-        return ListView.builder(
-          itemCount: data.size,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(data.docs[index]['mensaje']),
-            );
-          },
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Tarea práctica 04'),
+      ),
+      body: ListView(
+        children: <Widget>[
+          ListTile(
+            title: const Text('Actividad 1'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const Activity1Screen()),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text('Actividad 2'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const Activity2Screen()),
+              );
+            },
+          ),
+          // Añade más ListTile según sea necesario
+        ],
+      ),
     );
   }
 }
